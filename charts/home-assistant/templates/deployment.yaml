@@ -1,6 +1,6 @@
 {{- $args := include "home-assistant.vscode.args" . -}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ template "home-assistant.fullname" . }}
   labels:
@@ -10,12 +10,9 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   replicas: 1
-  strategy:
-    type: {{ .Values.strategyType }}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "home-assistant.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+  selector: 
+    matchLabels: {}
+  serviceName: {{ template "home-assistant.fullname" . }}
   template:
     metadata:
       labels:
